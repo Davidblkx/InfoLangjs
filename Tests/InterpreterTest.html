@@ -29,12 +29,12 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="InfoInterpreter.js"></script>
+<script src="../interpreter/infoInterop.js"></script>
 <script>
     jQuery(function($){
 
         $('#source').on("input", function(){
-            $('#object')[0].value = InfoInterop.Parse($('#source')[0].value);
+            $('#object')[0].value = InfoLangInterop.Parse($('#source')[0].value);
         })
 
     });
