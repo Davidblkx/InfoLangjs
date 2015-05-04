@@ -29,12 +29,15 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="../interpreter/infoInterop.js"></script>
+<script src="../interpreter/infoLangInterop.js"></script>
+<script src="../interpreter/infoLangRule.js"></script>
 <script>
     jQuery(function($){
 
         $('#source').on("input", function(){
-            $('#object')[0].value = InfoLangInterop.Parse($('#source')[0].value);
+            var obj= InfoLangInterop.Parse($('#source')[0].value);
+
+            $('#object')[0].value = JSON.stringify(obj);
         })
 
     });
