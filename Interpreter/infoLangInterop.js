@@ -9,11 +9,9 @@ var InfoLangInterop = {
 
         var arr = [];
 
-        for(i=0;i<this.Rules.length;i++){
-            arr.push(this.Rules[i].Parse(source))
+        for(v=0;v<this.Rules.length;v++){
+            arr.push(this.Rules[v].Parse(source))
         }
-
-        console.log(arr);
         return arr;
     }
 };

@@ -49,19 +49,23 @@ InfoLangSimpleRule = function(name, startRule, endRule) {
             }
         }
 
+        if(rez.length === 0)
+            return (JSON.parse('{"' + rule.Name + '" : []}'));
+
         var unique = [];
 
         $.each(rez, function(i, el){
             if($.inArray(el, unique) === -1) unique.push(el);
         });
 
-        rez = [];
+        var result = '{ "' + rule.Name +'" : [';
+
         for(i=0; i<unique.length;i++){
-            var obj = JSON.parse('{"'+rule.Name+'":"'+unique[i]+'"}');
-            rez.push(obj);
+            result += '"' + unique[i] + '",';
         }
 
-        return rez;
+        result  = result.substring(0, result.length-1) + ']}';
+        return JSON.parse(result);
     };
 
     return rule;
@@ -70,7 +74,7 @@ InfoLangSimpleRule = function(name, startRule, endRule) {
 InfoLangMultiRule = function(name, startRule, separator, endRule){
     var rule = new PrototypeRule();
     rule.Name = name;
-    rule.Regex.push(new RegExp(startRule + "(.*)" + separator + "([0-9])+", "g"));
+    rule.Regex.push(new RegExp(startRule + "(.*)" + separator + "([0-9])+" + endRule, "g"));
 
     rule.Parse = function(stringSource){
         var rez = [];
@@ -111,15 +115,12 @@ InfoLangMultiRule = function(name, startRule, separator, endRule){
             var name = str.substring(startRule.length, str.indexOf(';'));
             var nums = str.substring(str.indexOf(';')+1).split(';');
 
-            var obj = JSON.parse('{"'+rule.Name+'":"'+name+'", "Values": ' + JSON.stringify(nums) + '}');
+            var obj = JSON.parse('{"'+name+'" : ' + JSON.stringify(nums) + '}');
             rez.push(obj);
         }
 
-        return rez;
+        return JSON.parse('{"' + rule.Name + '" : ' + JSON.stringify(rez) + '}');
     };
 
     return rule;
 };
-
-InfoLangInterop.Rules.push(new InfoLangSimpleRule("Nome", '!n', ''));
-InfoLangInterop.Rules.push(new InfoLangMultiRule("Contactos", '#', ';', ''));

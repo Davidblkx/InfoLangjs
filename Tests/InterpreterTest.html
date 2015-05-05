@@ -34,6 +34,9 @@
 <script>
     jQuery(function($){
 
+        InfoLangInterop.Rules.push(new InfoLangSimpleRule("Nome", '!', ''));
+        InfoLangInterop.Rules.push(new InfoLangMultiRule("Contactos", '#', ';', ''));
+
         $('#source').on("input", function(){
             var obj= InfoLangInterop.Parse($('#source')[0].value);
 
