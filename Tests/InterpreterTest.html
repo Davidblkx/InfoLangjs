@@ -18,7 +18,14 @@
             left: 50%;
             top:0;
             width: 50%;
-            height: 100%;
+            height: 50%;
+        }
+        #items{
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            width: 50%;
+            height: 50%;
         }
     </style>
 </head>
@@ -26,23 +33,19 @@
 <div id="content">
     <textarea id="source"></textarea>
     <textarea id="object"></textarea>
+    <div id="items">
+    </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
 <script src="../interpreter/infoLangInterop.js"></script>
 <script src="../interpreter/infoLangRule.js"></script>
 <script>
-    jQuery(function($){
+    InfoLangInterop.Rules.push(new InfoLangSimpleRule("Nomes", '!n', ''));
+    InfoLangInterop.Rules.push(new InfoLangMultiRule("Contacto", "Nome", "Numero", '!', ';', ''));
 
-        InfoLangInterop.Rules.push(new InfoLangSimpleRule("Nome", '!', ''));
-        InfoLangInterop.Rules.push(new InfoLangMultiRule("Contactos", '#', ';', ''));
-
-        $('#source').on("input", function(){
-            var obj= InfoLangInterop.Parse($('#source')[0].value);
-
-            $('#object')[0].value = JSON.stringify(obj);
-        })
-
+    InfoLangInterop.SetWatchOn("source", "items", function(obj){
+        document.getElementById('object').value = JSON.stringify(obj);
     });
 </script>
 </body>
