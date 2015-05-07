@@ -3,37 +3,24 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <style>
-
-        #source{
-            position: fixed;
-            left: 0;
-            top:0;
-            width: 50%;
-            height: 100%;
-        }
-
-        #object{
-            position: fixed;
-            left: 50%;
-            top:0;
-            width: 50%;
-            height: 50%;
-        }
-        #items{
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            width: 50%;
-            height: 50%;
-        }
-    </style>
+    <link rel="stylesheet" href="InterpreterTestStyles.css">
 </head>
 <body>
-<div id="content">
-    <textarea id="source"></textarea>
-    <textarea id="object"></textarea>
-    <div id="items">
+<div class="container h100">
+
+    <div class="row h100">
+        <div class="6u h100">
+            <h2>Input source:</h2>
+            <textarea id="source"></textarea>
+            <h2>JSON Presentation of returned object:</h2>
+            <textarea id="object"></textarea>
+        </div>
+        <div class="6u h100">
+            <h2>Generated HTML:</h2>
+            <div id="items">
+
+            </div>
+        </div>
     </div>
 </div>
 
@@ -41,8 +28,10 @@
 <script src="../interpreter/infoLangInterop.js"></script>
 <script src="../interpreter/infoLangRule.js"></script>
 <script>
-    InfoLangInterop.Rules.push(new InfoLangSimpleRule("Nomes", '!n', ''));
-    InfoLangInterop.Rules.push(new InfoLangMultiRule("Contacto", "Nome", "Numero", '!', ';', ''));
+    skel.init();
+
+    InfoLangInterop.Rules.push(new InfoLangSimpleRule("Name", '!n', ''));
+    InfoLangInterop.Rules.push(new InfoLangMultiRule("Contact", "Name", "Number", '!', ';', ''));
 
     InfoLangInterop.SetWatchOn("source", "items", function(obj){
         document.getElementById('object').value = JSON.stringify(obj);
