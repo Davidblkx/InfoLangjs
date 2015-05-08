@@ -1,6 +1,61 @@
 /**
- * Created by David on 04/05/2015.
+ * Created by David on 03/05/2015.
  */
+
+var InfoLangInterop = {
+    Rules : [ ],
+
+    Parse : function(source){
+
+        var arr = [];
+
+        for(v=0;v<this.Rules.length;v++){
+            arr.push(this.Rules[v].Parse(source));
+        }
+
+        var ptp = '{';
+
+        for(v=0;v<arr.length;v++){
+
+            var txt = JSON.stringify(arr[v]);
+            txt = txt.substring(1, txt.length-1);
+
+            if(v>0)
+                txt = ',' + txt;
+
+            ptp += txt;
+        }
+
+        ptp += '}';
+
+        return JSON.parse(ptp);
+    },
+
+    SetWatchOn : function(elemId, viewElemId , onInput){
+
+        var elem = document.getElementById(elemId);
+        var sourceRules = this.Rules;
+        elem.addEventListener("input", function(){
+
+            var DATA = InfoLangInterop.Parse(elem.value);
+
+            if(viewElemId !== undefined) {
+                var view = document.getElementById(viewElemId);
+                while (view.hasChildNodes()) {
+                    view.removeChild(view.lastChild);
+                }
+
+                for (var ruleId = 0; ruleId < sourceRules.length; ruleId++) {
+                    view.appendChild(sourceRules[ruleId].BuildElement(DATA));
+                }
+            }
+
+            if(onInput !== undefined)
+                onInput(DATA);
+
+        });
+    }
+};
 
 PrototypeRule = function(){
   return {
@@ -21,7 +76,6 @@ PrototypeRule = function(){
 
   };
 };
-
 InfoLangSimpleRule = function(name, startRule, endRule) {
 
     var rule = new PrototypeRule();
@@ -35,7 +89,7 @@ InfoLangSimpleRule = function(name, startRule, endRule) {
         for (var i = 0; i < this.Regex.length; i++) {
             var matchResult = stringSource.match(this.Regex[i]);
 
-            if(matchResult == undefined)
+            if(matchResult === undefined)
                 continue;
 
             for(j = 0;j < matchResult.length; j++){
@@ -115,7 +169,6 @@ InfoLangSimpleRule = function(name, startRule, endRule) {
 
     return rule;
 };
-
 InfoLangMultiRule = function(name, key, value,  startRule, separator, endRule){
 
     var rule = new PrototypeRule();
@@ -131,7 +184,7 @@ InfoLangMultiRule = function(name, key, value,  startRule, separator, endRule){
         for (i = 0; i < this.Regex.length; i++) {
             var matchResult = stringSource.match(this.Regex[i]);
 
-            if(matchResult == undefined)
+            if(matchResult === undefined)
                 continue;
 
             for(j = 0;j < matchResult.length; j++){
@@ -149,7 +202,7 @@ InfoLangMultiRule = function(name, key, value,  startRule, separator, endRule){
         }
 
         //If no item is parsed, an empty object is returned
-        if(rez.length == 0)
+        if(rez.length === 0)
             return JSON.parse('{"' + rule.Name + '" : ' + JSON.stringify(rez) + '}');
 
         //remove repeated items
